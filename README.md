@@ -18,7 +18,7 @@ Drop just the skill(s) you need into the current project's `.claude/skills/`. Cl
 ```bash
 mkdir -p .claude/skills
 curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
-  | tar xz -C .claude/skills --strip-components=2 \
+  | tar xz -C .claude/skills --strip-components=1 \
       claude-skills-main/<skill-name>
 ```
 
@@ -27,7 +27,7 @@ curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
 ```bash
 mkdir -p .claude/skills
 curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
-  | tar xz -C .claude/skills --strip-components=2 \
+  | tar xz -C .claude/skills --strip-components=1 \
       claude-skills-main/<skill-name> \
       claude-skills-main/shared
 ```
@@ -37,7 +37,7 @@ Example — install `academic-paper-reviewer` (which needs `shared/`) into the c
 ```bash
 mkdir -p .claude/skills
 curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
-  | tar xz -C .claude/skills --strip-components=2 \
+  | tar xz -C .claude/skills --strip-components=1 \
       claude-skills-main/academic-paper-reviewer \
       claude-skills-main/shared
 ```
@@ -51,7 +51,7 @@ If a particular skill is something you use in *every* project, install it at use
 ```bash
 mkdir -p ~/.claude/skills
 curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
-  | tar xz -C ~/.claude/skills --strip-components=2 \
+  | tar xz -C ~/.claude/skills --strip-components=1 \
       claude-skills-main/<skill-name>
 ```
 
