@@ -1,0 +1,29 @@
+name: setup
+
+# Guards setup.sh against the regression where it rewrites committed
+# relative symlinks with absolute paths (or any other modification to
+# tracked files). See #52 for the original bug.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  install-leaves-tree-clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run setup.sh
+        # stdin closed so the vault-path prompt returns empty rather than hang
+        run: bash setup.sh < /dev/null
+      - name: Working tree must be unchanged
+        run: |
+          if ! git diff --exit-code; then
+            echo "::error::setup.sh modified tracked files. Likely cause: an" \
+                 "in-repo symlink mirror is being written with an absolute" \
+                 "target instead of a relative one. See install_skills() in setup.sh."
+            exit 1
+          fi
+      - name: Re-run is idempotent
+        run: bash setup.sh < /dev/null && git diff --exit-code

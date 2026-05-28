@@ -1,0 +1,13 @@
+.env
+.DS_Store
+*.pyc
+__pycache__/
+
+# Python build artifacts (pyproject.toml / `python -m build`)
+/dist/
+/build/
+*.egg-info/
+
+# Agent skill symlinks (created by setup.sh) — these are just pointers to .skills/
+# We track them so cloners get the symlinks too, but if your git doesn't
+# preserve symlinks, run `bash setup.sh` after cloning.

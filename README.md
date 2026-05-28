@@ -4,10 +4,21 @@ Personal storage of [Claude Code](https://claude.com/claude-code) skills I've bu
 
 ## Skills
 
+### Native (authored here)
+
 | Skill | What it does | Depends on |
 |---|---|---|
 | [`academic-paper-reviewer/`](./academic-paper-reviewer) | Multi-perspective academic paper review. Simulates EIC + 3 peer reviewers + Devil's Advocate with field-specific expertise. Supports full review, re-review (verification), quick assessment, methodology focus, Socratic guided, and calibration modes. | `shared/` |
 | [`shared/`](./shared) | Cross-skill reference docs (cross-model verification protocol, handoff schemas, mode spectrum, style calibration). Not a skill on its own — install alongside skills that depend on it. | — |
+
+### Mirrored bundles (third-party)
+
+Pinned snapshots of upstream skill bundles I've used. **Original LICENSE files are preserved inside each subdirectory**; both upstreams are MIT-licensed. Pull from upstream directly if you want the latest — these copies are not auto-synced.
+
+| Bundle | Upstream | Contains | What it does |
+|---|---|---|---|
+| [`gstack/`](./gstack) | [garrytan/gstack](https://github.com/garrytan/gstack) | 50+ skills (`autoplan`, `benchmark`, `design-review`, `qa`, etc.) + supporting `bin/` scripts | Garry Tan's opinionated Claude Code stack — 23+ tools playing CEO / Designer / Eng Manager / Release Manager / Doc Engineer / QA roles. Many skills depend on the bundle's own `bin/` scripts, so install the whole `gstack/` rather than cherry-picking individual skill folders. |
+| [`obsidian-wiki/`](./obsidian-wiki) | [Ar9av/obsidian-wiki](https://github.com/Ar9av/obsidian-wiki) | ~37 skills under `.skills/` (`llm-wiki`, `skill-creator`, `wiki-*`, `*-history-ingest`) + a Python package `obsidian_wiki/` | Framework for AI agents to maintain a "digital brain" via an Obsidian vault, following Karpathy's LLM Wiki pattern. The skills under `.skills/` are usable standalone; many also expect the Python package + `setup.sh` for full ingestion/sync functionality. |
 
 ## Install (per project, recommended)
 
@@ -43,6 +54,24 @@ curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
 ```
 
 Files end up at `.claude/skills/academic-paper-reviewer/...` and `.claude/skills/shared/...`. Commit them to the project repo (or add `.claude/skills/` to `.gitignore`) — your call per project.
+
+**Pulling a single skill out of a mirrored bundle** — adjust `--strip-components` and the path inside the tarball:
+
+```bash
+# From gstack/ — path is claude-skills-main/gstack/<skill>, so strip=2
+mkdir -p .claude/skills
+curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
+  | tar xz -C .claude/skills --strip-components=2 \
+      claude-skills-main/gstack/<skill-name>
+
+# From obsidian-wiki/.skills/ — path is claude-skills-main/obsidian-wiki/.skills/<skill>, so strip=3
+mkdir -p .claude/skills
+curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
+  | tar xz -C .claude/skills --strip-components=3 \
+      claude-skills-main/obsidian-wiki/.skills/<skill-name>
+```
+
+Heads up: gstack skills often call into `gstack/bin/*` scripts; pulling a single gstack skill without `bin/` may leave it half-broken. When in doubt, pull the whole `gstack/` directory (`--strip-components=1`, select `claude-skills-main/gstack`).
 
 ## Install (globally, for skills you want everywhere)
 

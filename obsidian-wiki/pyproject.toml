@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "obsidian-wiki"
+dynamic = ["version"]
+description = "A skill-based framework for building and maintaining an AI-maintained Obsidian knowledge base (Karpathy's LLM Wiki pattern) across any AI coding agent."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Ar9av" }]
+keywords = [
+  "obsidian",
+  "wiki",
+  "knowledge-base",
+  "llm",
+  "claude",
+  "agent-skills",
+  "second-brain",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Documentation",
+  "Topic :: Text Processing :: Markup :: Markdown",
+  "Topic :: Utilities",
+]
+# Pure-stdlib CLI — installing skills needs no third-party runtime dependencies.
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Ar9av/obsidian-wiki"
+Repository = "https://github.com/Ar9av/obsidian-wiki"
+Issues = "https://github.com/Ar9av/obsidian-wiki/issues"
+
+[project.scripts]
+obsidian-wiki = "obsidian_wiki.cli:main"
+
+# Version is derived from the git tag (CalVer, e.g. v2026.05.2 -> 2026.5.2),
+# matching the repo's release tags. Tagging a release is the version bump.
+[tool.hatch.version]
+source = "vcs"
+
+# ── Build configuration ──────────────────────────────────────────────────────
+# The Python package is just the thin CLI in obsidian_wiki/. The actual product
+# is the markdown skill content under .skills/ plus the agent bootstrap files.
+# We force-include those into the wheel under obsidian_wiki/_data/ so the
+# installed package is self-contained and the CLI can install skills without a
+# cloned repo. Source paths stay at the repo root (single source of truth).
+
+[tool.hatch.build.targets.wheel]
+packages = ["obsidian_wiki"]
+
+[tool.hatch.build.targets.wheel.force-include]
+".skills" = "obsidian_wiki/_data/skills"
+".env.example" = "obsidian_wiki/_data/.env.example"
+"AGENTS.md" = "obsidian_wiki/_data/bootstrap/AGENTS.md"
+".cursor/rules/obsidian-wiki.mdc" = "obsidian_wiki/_data/bootstrap/cursor/rules/obsidian-wiki.mdc"
+".windsurf/rules/obsidian-wiki.md" = "obsidian_wiki/_data/bootstrap/windsurf/rules/obsidian-wiki.md"
+".kiro/steering/obsidian-wiki.md" = "obsidian_wiki/_data/bootstrap/kiro/steering/obsidian-wiki.md"
+".agent/rules/obsidian-wiki.md" = "obsidian_wiki/_data/bootstrap/agent/rules/obsidian-wiki.md"
+".agent/workflows/obsidian-wiki.md" = "obsidian_wiki/_data/bootstrap/agent/workflows/obsidian-wiki.md"
+".github/copilot-instructions.md" = "obsidian_wiki/_data/bootstrap/github/copilot-instructions.md"
+
+[tool.hatch.build.targets.sdist]
+# Prune build noise and the committed agent symlink mirrors (the CLI
+# regenerates those; left in, hatchling's VCS walker treats them as the
+# canonical path for each skill and drops the real .skills/<name> files).
+exclude = [
+  "/.claude",
+  "/.cursor/skills",
+  "/.windsurf/skills",
+  "/.agents/skills",
+  "/.pi/skills",
+  "/.kiro/skills",
+  "/dist",
+  "/build",
+]
+
+# Force the real .skills/ tree into the sdist regardless of the VCS walker, so
+# the wheel (built from the sdist) can in turn force-include it under _data/.
+[tool.hatch.build.targets.sdist.force-include]
+".skills" = ".skills"
