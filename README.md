@@ -1,60 +1,86 @@
 # claude-skills
 
-Personal collection of [Claude Code](https://claude.com/claude-code) skills, kept here so I can pull them onto any machine I work on.
+Personal storage of [Claude Code](https://claude.com/claude-code) skills I've built or collected. Treated as an **archive to pull from on demand** — pick the skills that fit the current project rather than syncing everything everywhere.
 
 ## Skills
 
-| Skill | What it does |
-|---|---|
-| [`academic-paper-reviewer/`](./academic-paper-reviewer) | Multi-perspective academic paper review. Simulates EIC + 3 peer reviewers + Devil's Advocate with field-specific expertise. Supports full review, re-review (verification), quick assessment, methodology focus, Socratic guided, and calibration modes. |
-| [`shared/`](./shared) | Cross-skill reference docs: cross-model verification protocol, handoff schemas, mode spectrum, style calibration. Referenced by `academic-paper-reviewer` (and any future skills that need the same primitives). |
+| Skill | What it does | Depends on |
+|---|---|---|
+| [`academic-paper-reviewer/`](./academic-paper-reviewer) | Multi-perspective academic paper review. Simulates EIC + 3 peer reviewers + Devil's Advocate with field-specific expertise. Supports full review, re-review (verification), quick assessment, methodology focus, Socratic guided, and calibration modes. | `shared/` |
+| [`shared/`](./shared) | Cross-skill reference docs (cross-model verification protocol, handoff schemas, mode spectrum, style calibration). Not a skill on its own — install alongside skills that depend on it. | — |
 
-## Install
+## Install (per project, recommended)
 
-Skills live in `~/.claude/skills/` (user-level) or `<project>/.claude/skills/` (project-level). Claude Code loads anything it finds there. To install this collection on a new machine, clone the repo once and symlink the skills you want into `~/.claude/skills/`:
+Drop just the skill(s) you need into the current project's `.claude/skills/`. Claude Code loads anything it finds there for that project only.
+
+**One skill at a time** (replace `<skill-name>` with the directory name above):
 
 ```bash
-# 1. Clone somewhere persistent
-git clone https://github.com/fbdeme/claude-skills.git ~/repos/claude-skills
+mkdir -p .claude/skills
+curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
+  | tar xz -C .claude/skills --strip-components=2 \
+      claude-skills-main/<skill-name>
+```
 
-# 2. Symlink into ~/.claude/skills/
+**With `shared/` if the skill depends on it:**
+
+```bash
+mkdir -p .claude/skills
+curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
+  | tar xz -C .claude/skills --strip-components=2 \
+      claude-skills-main/<skill-name> \
+      claude-skills-main/shared
+```
+
+Example — install `academic-paper-reviewer` (which needs `shared/`) into the current project:
+
+```bash
+mkdir -p .claude/skills
+curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
+  | tar xz -C .claude/skills --strip-components=2 \
+      claude-skills-main/academic-paper-reviewer \
+      claude-skills-main/shared
+```
+
+Files end up at `.claude/skills/academic-paper-reviewer/...` and `.claude/skills/shared/...`. Commit them to the project repo (or add `.claude/skills/` to `.gitignore`) — your call per project.
+
+## Install (globally, for skills you want everywhere)
+
+If a particular skill is something you use in *every* project, install it at user level instead — `~/.claude/skills/` is picked up by every session:
+
+```bash
 mkdir -p ~/.claude/skills
-ln -s ~/repos/claude-skills/academic-paper-reviewer ~/.claude/skills/academic-paper-reviewer
-ln -s ~/repos/claude-skills/shared                  ~/.claude/skills/shared
-
-# 3. Pull updates whenever
-cd ~/repos/claude-skills && git pull
+curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
+  | tar xz -C ~/.claude/skills --strip-components=2 \
+      claude-skills-main/<skill-name>
 ```
 
-Symlinks (rather than `cp`) so edits in either place stay in sync, and `git pull` is enough to update everywhere.
+This is a one-shot copy, not synced. To update later, re-run the same command (it overwrites).
 
-To install only one skill, symlink just that directory and skip `shared/` if the skill doesn't depend on it. `academic-paper-reviewer` does depend on `shared/`, so install both together.
+## Updating a skill in a project
 
-## Verifying installation
+Re-run the install command from the project root. It overwrites the existing copy. If you've made local edits you want to keep, commit them first and merge by hand.
 
-After symlinking, start a new Claude Code session and check that the skill appears in the available-skills list. You can also manually inspect:
+## Pushing edits back to this repo
 
-```bash
-ls -la ~/.claude/skills/
-# Should show the symlinks pointing into the cloned repo.
-```
-
-## Updating a skill
-
-Edit the file in the cloned repo (not in `~/.claude/skills/`, even though the symlink makes them appear identical). Then:
+If you improve a skill in a project and want the change reflected in the library:
 
 ```bash
-cd ~/repos/claude-skills
+# From the project where you edited
+cd /path/to/the/cloned-claude-skills
+# Replace just the changed skill
+rm -rf academic-paper-reviewer
+cp -r /path/to/project/.claude/skills/academic-paper-reviewer .
 git add -A && git commit -m "..." && git push
 ```
 
-Other machines pick up changes with `git pull` — no re-link needed.
+The repo is the canonical archive; project copies are working copies.
 
 ## Adding a new skill
 
-1. Create a new top-level directory with a `SKILL.md` at its root. Frontmatter must include `name` and `description` (the `description` is what Claude Code matches against user intent).
-2. If the skill depends on docs in `shared/`, reference them by relative path from `SKILL.md`.
-3. Add a row to the table above.
+1. Create a top-level directory with `SKILL.md` at its root. Frontmatter must include `name` and `description` (Claude Code matches the description against user intent).
+2. If it depends on `shared/`, reference shared files by relative path from `SKILL.md`.
+3. Add a row to the table above (including the `Depends on` column).
 4. Commit + push.
 
 ## License
