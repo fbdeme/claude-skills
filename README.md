@@ -9,6 +9,7 @@ Personal storage of [Claude Code](https://claude.com/claude-code) skills I've bu
 | Skill | What it does | Depends on |
 |---|---|---|
 | [`academic-paper-reviewer/`](./academic-paper-reviewer) | Multi-perspective academic paper review. Simulates EIC + 3 peer reviewers + Devil's Advocate with field-specific expertise. Supports full review, re-review (verification), quick assessment, methodology focus, Socratic guided, and calibration modes. | `shared/` |
+| [`docs-pattern/`](./docs-pattern) | Bootstrap and maintain my personal project-docs pattern under `docs/`: `current_status.md`, `history.md`, `issues.md`, `todo.md`, optional `research_method.md`. Each file has a defined responsibility and update rule (no hooks, no auto-injection — explicit reads/writes only). | — |
 | [`shared/`](./shared) | Cross-skill reference docs (cross-model verification protocol, handoff schemas, mode spectrum, style calibration). Not a skill on its own — install alongside skills that depend on it. | — |
 
 ### Commands (slash commands)
