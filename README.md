@@ -11,6 +11,14 @@ Personal storage of [Claude Code](https://claude.com/claude-code) skills I've bu
 | [`academic-paper-reviewer/`](./academic-paper-reviewer) | Multi-perspective academic paper review. Simulates EIC + 3 peer reviewers + Devil's Advocate with field-specific expertise. Supports full review, re-review (verification), quick assessment, methodology focus, Socratic guided, and calibration modes. | `shared/` |
 | [`shared/`](./shared) | Cross-skill reference docs (cross-model verification protocol, handoff schemas, mode spectrum, style calibration). Not a skill on its own — install alongside skills that depend on it. | — |
 
+### Commands (slash commands)
+
+Custom slash commands. Unlike skills, these install into `.claude/commands/` (not `.claude/skills/`) and are invoked by typing `/<name>`.
+
+| Command | What it does | Install to |
+|---|---|---|
+| [`pptx/`](./pptx) | `/pptx <description>` — generates professional PowerPoint via python-pptx with baked-in design rules (native paragraph-level bullets, `space_before` spacing, NAVY/BLUE single-accent palette, table styling, LibreOffice PNG preview). Ships copy-pasteable helpers (`set_para_indent`, `add_tb`, `set_cell_fmt`, `del_shape`). | `.claude/commands/` |
+
 ### Mirrored bundles (third-party)
 
 Pinned snapshots of upstream skill bundles I've used. **Original LICENSE files are preserved inside each subdirectory**; both upstreams are MIT-licensed. Pull from upstream directly if you want the latest — these copies are not auto-synced.
@@ -85,6 +93,19 @@ curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
 ```
 
 This is a one-shot copy, not synced. To update later, re-run the same command (it overwrites).
+
+## Install (commands)
+
+Slash commands under [`pptx/`](./pptx) install into `.claude/commands/`, not `.claude/skills/`:
+
+```bash
+# User-global (available in every project)
+mkdir -p ~/.claude/commands
+curl -sL https://raw.githubusercontent.com/fbdeme/claude-skills/main/pptx/commands/pptx.md \
+  -o ~/.claude/commands/pptx.md
+```
+
+Then invoke with `/pptx <description>`. See [`pptx/README.md`](./pptx/README.md) for requirements (`uv`, `libreoffice`, `poppler`) and usage.
 
 ## Updating a skill in a project
 
