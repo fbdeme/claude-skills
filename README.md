@@ -10,6 +10,7 @@ Each one is a standalone repo. Install with the command on its own README.
 |---|---|---|
 | `academic-paper-reviewer` | [fbdeme/academic-paper-reviewer](https://github.com/fbdeme/academic-paper-reviewer) | Multi-perspective academic paper peer review — EIC + 3 reviewers + Devil's Advocate, field-aware. Full / re-review / quick / methodology-focus / Socratic / calibration modes. (Ships with bundled `shared/` dependency.) |
 | `docs-pattern` | [fbdeme/docs-pattern](https://github.com/fbdeme/docs-pattern) | Bootstrap and maintain a five-file project-docs pattern under `docs/` (`current_status` / `history` / `issues` / `todo` / optional `research_method`). Explicit reads/writes only — no hooks. |
+| `typed-todo` | [fbdeme/typed-todo](https://github.com/fbdeme/typed-todo) | Cross-project personal task management as a typed property graph — 5 classes (Task/Project/Area/Person/Resource), 7 typed object properties with explicit cardinality, markdown vault at `~/todo/`. Companion to `docs-pattern` (per-project) and `obsidian-wiki` (knowledge): this one manages *intentions*. |
 
 ## Native commands (slash commands)
 
