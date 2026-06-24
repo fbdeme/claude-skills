@@ -9,6 +9,7 @@ Each one is a standalone repo. Install with the command on its own README.
 | Skill | Repo | What it does |
 |---|---|---|
 | `academic-paper-reviewer` | [fbdeme/academic-paper-reviewer](https://github.com/fbdeme/academic-paper-reviewer) | Multi-perspective academic paper peer review — EIC + 3 reviewers + Devil's Advocate, field-aware. Full / re-review / quick / methodology-focus / Socratic / calibration modes. (Ships with bundled `shared/` dependency.) |
+| `claude-state-migrate` | [fbdeme/claude-state-migrate](https://github.com/fbdeme/claude-state-migrate) | Migrate & merge Claude Code's own state — chat sessions (`.jsonl`) + auto-memory (`.md`) — between machines or project scopes without overwriting. Version-aware cwd path-encoding, scope-preserving memory merge with migration banners + perspective translation, optional in-transcript path rewrite. Helper script is dry-run by default. |
 | `docs-pattern` | [fbdeme/docs-pattern](https://github.com/fbdeme/docs-pattern) | Bootstrap and maintain a five-file project-docs pattern under `docs/` (`current_status` / `history` / `issues` / `todo` / optional `research_method`). Explicit reads/writes only — no hooks. |
 | `typed-todo` | [fbdeme/typed-todo](https://github.com/fbdeme/typed-todo) | Cross-project personal task management as a typed property graph — 5 classes (Task/Project/Area/Person/Resource), 7 typed object properties with explicit cardinality, markdown vault at `~/todo/`. Companion to `docs-pattern` (per-project) and `obsidian-wiki` (knowledge): this one manages *intentions*. |
 
