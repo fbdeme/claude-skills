@@ -26,17 +26,30 @@ Commands install into `.claude/commands/` instead of `.claude/skills/` and are i
 
 ## Mirrored bundles (third-party)
 
-Pinned snapshots of upstream skill bundles I use. **Original LICENSE files are preserved inside each subdirectory**; both upstreams are MIT-licensed. These copies are **not auto-synced** — pull from upstream directly if you want the latest.
+Pinned snapshots of upstream skill bundles I use. **Original LICENSE files are preserved inside each subdirectory** (MIT or Apache-2.0). These copies are **not auto-synced** — pull from upstream directly if you want the latest.
 
 | Bundle | Upstream | Contains | What it does |
 |---|---|---|---|
 | [`gstack/`](./gstack) | [garrytan/gstack](https://github.com/garrytan/gstack) | 50+ skills (`autoplan`, `benchmark`, `design-review`, `qa`, etc.) + supporting `bin/` scripts | Garry Tan's opinionated Claude Code stack — 23+ tools playing CEO / Designer / Eng Manager / Release Manager / Doc Engineer / QA roles. Many skills depend on the bundle's own `bin/` scripts, so install the whole `gstack/` rather than cherry-picking individual skill folders. |
 | [`obsidian-wiki/`](./obsidian-wiki) | [Ar9av/obsidian-wiki](https://github.com/Ar9av/obsidian-wiki) | ~37 skills under `.skills/` (`llm-wiki`, `skill-creator`, `wiki-*`, `*-history-ingest`) + a Python package `obsidian_wiki/` | Framework for AI agents to maintain a "digital brain" via an Obsidian vault, following Karpathy's LLM Wiki pattern. The skills under `.skills/` are usable standalone; many also expect the Python package + `setup.sh` for full ingestion/sync functionality. |
 | [`ponytail/`](./ponytail) | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | 6 skills under `skills/` (`ponytail`, `ponytail-audit`, `ponytail-review`, `ponytail-debt`, `ponytail-gain`, `ponytail-help`) + LICENSE + README | "Laziest senior dev" anti-over-engineering. A decision ladder that writes the least code that solves the problem, plus repo/diff audits ranking what to `delete`/`shrink`/replace-with-`stdlib`. Skill folders only — the full upstream also ships plugin hooks/commands/MCP for auto-activation. Self-contained markdown skills; usable standalone. |
+| [`frontend-design/`](./frontend-design) | [anthropics/skills](https://github.com/anthropics/skills) @ `fa0fa64` (Apache-2.0) | 1 skill, `SKILL.md` at dir root | Anthropic's official anti-"AI slop" design skill: act as an opinionated design lead — ground aesthetics in the subject's world, spend boldness in one place, avoid the three clustered defaults (cream+serif, near-black+neon, broadsheet). |
+| [`interface-design/`](./interface-design) | [Dammyjay93/interface-design](https://github.com/Dammyjay93/interface-design) @ `2f9be32` (MIT) | 1 skill (`SKILL.md` + `agents/`) | Craft-first **product UI** design (dashboards/tools/data interfaces — not marketing). Persists decisions to `.interface-design/system.md` so spacing/tokens/component styles survive across sessions; `/interface-design:design-review` for hierarchy audits. |
+| [`impeccable/`](./impeccable) | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) @ `4d849eb` v3.9.1 (Apache-2.0) | 1 skill (`SKILL.md` + `reference/` + `scripts/`) | Paul Bakaus' design guidance system: ~20 commands (`craft`, `audit`, `critique`, `polish`, `bolder`, `quieter`, `animate`, `harden`, …) + deterministic anti-pattern detectors (46 rules). Snapshot is the prebuilt plugin skill; upstream also ships hooks/agents via `npx impeccable install`. |
+| [`ui-ux-pro-max/`](./ui-ux-pro-max) | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) @ `1307d97` v2.11.0 (MIT) | 1 skill (`SKILL.md` + `data/` CSVs + `scripts/search.py`) | Design-system generator: searchable local DB of 84 UI styles, 192 palettes, 74 font pairings, 98 UX guidelines, 25 chart types across 22 stacks. `scripts/search.py "<query>" --design-system` reasons out a full tailored system (pattern/style/colors/type/anti-patterns). Python stdlib only. |
 
 ## Install (per project)
 
 For **native skills/commands**, use the install command on the skill's own README. They publish their own tarballs at the repo root, so the strip-components dance is simpler than going through this archive.
+
+For a **single-skill mirror** (`frontend-design/`, `interface-design/`, `impeccable/`, `ui-ux-pro-max/` — `SKILL.md` at dir root), the dir itself is the skill, so strip=1:
+
+```bash
+mkdir -p ~/.claude/skills
+curl -sL https://github.com/fbdeme/claude-skills/archive/main.tar.gz \
+  | tar xz -C ~/.claude/skills --strip-components=1 \
+      claude-skills-main/<skill-name>
+```
 
 For a **single skill from a mirrored bundle**, pull it out of this archive's tarball:
 
